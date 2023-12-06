@@ -1,16 +1,18 @@
 import './alias'
-import express from 'express'
+import express, { Express } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import helmet from 'helmet'
 import logger from './helpers/logger'
 import routes from './router'
+import http from 'http'
 import { rateLimiterMiddleware } from './middlewares/rate_limiter'
 import { settings } from './config/settings'
 import { handleErrorMiddleware } from './middlewares/error_handler'
+import { useGraphQL } from './graphql'
 
 class App {
-  public app: express.Application
+  public app: Express
 
   constructor() {
     this.app = express()
@@ -34,8 +36,10 @@ class App {
     this.app.use(handleErrorMiddleware)
   }
 
-  start() {
-    return this.app.listen(settings.PORT, () => {
+  async start() {
+    const httpServer = http.createServer(this.app)
+    await useGraphQL(this.app, httpServer)
+    return httpServer.listen(settings.PORT, () => {
       logger.info('🚀 Server listen on port ' + settings.PORT)
     })
   }

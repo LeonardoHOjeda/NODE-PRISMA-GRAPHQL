@@ -6,8 +6,91 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DB_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Alumno {
+  id            Int             @id @default(autoincrement())
+  name          String
+  lastname      String
+  email         String
+  password      String
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime        @map("deleted_at")
+  AlumnoMateria AlumnoMateria[]
+  Tarea         Tarea[]
+  Calificacion  Calificacion[]
+
+  @@map("alumnos")
+}
+
+model Profesor {
+  id        Int       @id @default(autoincrement())
+  name      String
+  lastname  String
+  email     String
+  password  String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime  @map("deleted_at")
+  Materia   Materia[]
+
+  @@map("profesores")
+}
+
+model Materia {
+  id            Int             @id @default(autoincrement())
+  name          String
+  clave         String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime
+  AlumnoMateria AlumnoMateria[]
+  Tarea         Tarea[]
+  Profesor      Profesor        @relation(fields: [profesorId], references: [id])
+  profesorId    Int
+
+  @@map("materias")
+}
+
+model AlumnoMateria {
+  id        Int     @id @default(autoincrement())
+  alumno    Alumno  @relation(fields: [alumnoId], references: [id])
+  alumnoId  Int
+  materia   Materia @relation(fields: [materiaId], references: [id])
+  materiaId Int
+
+  @@map("alumnos_materias")
+}
+
+model Tarea {
+  id           Int            @id @default(autoincrement())
+  materia      Materia        @relation(fields: [materiaId], references: [id])
+  materiaId    Int
+  alumno       Alumno         @relation(fields: [alumnoId], references: [id])
+  alumnoId     Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  deletedAt    DateTime
+  Calificacion Calificacion[]
+
+  @@map("tareas")
+}
+
+model Calificacion {
+  id           Int      @id @default(autoincrement())
+  tarea        Tarea    @relation(fields: [tareaId], references: [id])
+  tareaId      Int
+  alumno       Alumno   @relation(fields: [alumnoId], references: [id])
+  alumnoId     Int
+  calificacion Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime
+
+  @@map("calificaciones")
 }
 
 model seed {

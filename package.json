@@ -1,5 +1,5 @@
 {
-  "name": "newproject",
+  "name": "node-prisma-graphql",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -20,7 +20,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^4.9.5",
     "@faker-js/faker": "^8.3.1",
+    "@graphql-tools/schema": "^10.0.2",
     "@prisma/client": "^5.6.0",
     "app-root-path": "^3.1.0",
     "bcrypt": "^5.1.1",
@@ -28,6 +30,8 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "helmet": "^7.1.0",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
@@ -46,5 +50,8 @@
     "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.3.2"
+  },
+  "prisma": {
+    "schema": "./src/database/prisma/schema.prisma"
   }
 }
