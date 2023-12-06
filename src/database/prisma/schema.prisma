@@ -17,8 +17,8 @@ model Alumno {
   email         String
   password      String
   createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  deletedAt     DateTime        @map("deleted_at")
+  updatedAt     DateTime?       @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
   AlumnoMateria AlumnoMateria[]
   Tarea         Tarea[]
   Calificacion  Calificacion[]
@@ -33,8 +33,8 @@ model Profesor {
   email     String
   password  String
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime  @map("deleted_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
   Materia   Materia[]
 
   @@map("profesores")
@@ -44,23 +44,23 @@ model Materia {
   id            Int             @id @default(autoincrement())
   name          String
   clave         String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  deletedAt     DateTime
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime?       @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+  profesorId    Int             @map("profesor_id")
   AlumnoMateria AlumnoMateria[]
   Tarea         Tarea[]
   Profesor      Profesor        @relation(fields: [profesorId], references: [id])
-  profesorId    Int
 
   @@map("materias")
 }
 
 model AlumnoMateria {
   id        Int     @id @default(autoincrement())
-  alumno    Alumno  @relation(fields: [alumnoId], references: [id])
   alumnoId  Int
-  materia   Materia @relation(fields: [materiaId], references: [id])
+  alumno    Alumno  @relation(fields: [alumnoId], references: [id])
   materiaId Int
+  materia   Materia @relation(fields: [materiaId], references: [id])
 
   @@map("alumnos_materias")
 }
@@ -86,9 +86,9 @@ model Calificacion {
   alumno       Alumno   @relation(fields: [alumnoId], references: [id])
   alumnoId     Int
   calificacion Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  deletedAt    DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   @@map("calificaciones")
 }

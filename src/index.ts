@@ -39,7 +39,7 @@ class App {
   async start() {
     const httpServer = http.createServer(this.app)
     await useGraphQL(this.app, httpServer)
-    return httpServer.listen(settings.PORT, () => {
+    return await httpServer.listen(settings.PORT, () => {
       logger.info('🚀 Server listen on port ' + settings.PORT)
     })
   }

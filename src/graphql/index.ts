@@ -7,10 +7,11 @@ import { Express } from 'express'
 import http from 'http'
 import logger from '@/helpers/logger'
 import { helloWorld } from './modules/hello-world';
+import { alumnos } from './modules/alumnos'
 
 export const schema = makeExecutableSchema({
-  typeDefs: [helloWorld.typeDef],
-  resolvers: [helloWorld.resolver],
+  typeDefs: [helloWorld.typeDef, alumnos.typeDef],
+  resolvers: [helloWorld.resolver, alumnos.resolver],
 })
 
 export const useGraphQL = async (app: Express, httpServer: http.Server) => {
