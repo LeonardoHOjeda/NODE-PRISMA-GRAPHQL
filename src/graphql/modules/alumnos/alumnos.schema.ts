@@ -6,6 +6,10 @@ export const typeDef = gql`
     alumno(id: Int!): Alumno
   }
 
+  type Mutation {
+    createAlumno(input: CreateAlumnoInput): Alumno
+  }
+
   type Alumno {
     id: Int!
     name: String!
@@ -14,5 +18,12 @@ export const typeDef = gql`
     createdAt: String!
     updatedAt: String!
     deletedAt: String
+  }
+
+  input CreateAlumnoInput {
+    name: String!
+    lastname: String!
+    email: String!
+    password: String!
   }
 `

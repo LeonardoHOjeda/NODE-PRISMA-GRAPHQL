@@ -8,5 +8,11 @@ export const resolver = {
     async alumno(_, { id }) {
       return await alumnoService.show(id)
     },
+  },
+  Mutation: {
+    async createAlumno(_, { input }) {
+      return await alumnoService.store(input)
+    }
   }
+
 }
