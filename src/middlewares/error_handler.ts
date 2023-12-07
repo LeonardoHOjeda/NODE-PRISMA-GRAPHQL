@@ -5,14 +5,14 @@ export class HTTPError extends Error {
   statusCode: number
   message: string
 
-  constructor(statusCode: number, message: string) {
+  constructor (statusCode: number, message: string) {
     super()
     this.statusCode = statusCode
     this.message = message
   }
 }
 export class UnauthorizedError extends HTTPError {
-  constructor() {
+  constructor () {
     super(401, 'Unauthorized')
   }
 }
@@ -23,13 +23,13 @@ export const handleErrorMiddleware = (err: HTTPError | Error, req: Request, res:
     logger.error(`Error ${statusCode}: ${message}`)
     res.status(statusCode).json({
       statusCode,
-      message,
+      message
     })
   } else {
     logger.error(`Server Error ${err}`)
     res.status(500).json({
       statusCode: 500,
-      message: 'Internal Server Error',
+      message: 'Internal Server Error'
     })
   }
 }

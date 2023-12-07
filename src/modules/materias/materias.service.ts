@@ -3,7 +3,7 @@ import { HTTPError } from '@/middlewares/error_handler'
 import { Materia } from '@prisma/client'
 
 class MateriasService {
-  async index() {
+  async index () {
     const materias = await prisma.materia.findMany({
       orderBy: {
         id: 'asc'
@@ -13,21 +13,21 @@ class MateriasService {
     return materias
   }
 
-  async show(id: number) {
+  async show (id: number) {
     const materia = await prisma.materia.findUnique({
       where: {
         id
       }
     })
 
-    if (!materia) {
+    if (materia == null) {
       throw new HTTPError(404, 'Materia no encontrada')
     }
 
     return materia
   }
 
-  async store(data: Materia) {
+  async store (data: Materia) {
     const materia = await prisma.materia.create({
       data
     })
@@ -35,10 +35,10 @@ class MateriasService {
     return materia
   }
 
-  async update(id: number, data: Materia) {
+  async update (id: number, data: Materia) {
     const materiaExists = await this.show(id)
 
-    if (!materiaExists) {
+    if (materiaExists == null) {
       throw new HTTPError(404, 'Materia no encontrada')
     }
 
@@ -52,10 +52,10 @@ class MateriasService {
     return materia
   }
 
-  async destroy(id: number) {
+  async destroy (id: number) {
     const materiaExists = await this.show(id)
 
-    if (!materiaExists) {
+    if (materiaExists == null) {
       throw new HTTPError(404, 'Materia no encontrada')
     }
 

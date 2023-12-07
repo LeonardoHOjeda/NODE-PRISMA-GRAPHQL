@@ -1,7 +1,7 @@
 export const resolver = {
   Query: {
-    salute() {
+    salute () {
       return 'Hello World! a todous los que estan viendo esto'
-    },
+    }
   }
 }

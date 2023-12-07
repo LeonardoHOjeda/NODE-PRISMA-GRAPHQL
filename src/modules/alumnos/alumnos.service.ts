@@ -3,7 +3,7 @@ import { prisma } from '@/database/client'
 import { HTTPError } from '@/middlewares/error_handler'
 
 class AlumnoService {
-  async index() {
+  async index () {
     const alumnos = await prisma.alumno.findMany({
       orderBy: {
         id: 'asc'
@@ -16,7 +16,7 @@ class AlumnoService {
     return alumnos
   }
 
-  async show(id: number) {
+  async show (id: number) {
     const alumno = await prisma.alumno.findUnique({
       where: {
         id,
@@ -24,17 +24,17 @@ class AlumnoService {
       }
     })
 
-    if (!alumno) {
+    if (alumno == null) {
       throw new HTTPError(404, 'Alumno no encontrado')
     }
 
     return alumno
   }
 
-  async store(data: Alumno) {
+  async store (data: Alumno) {
     const alumnoExists = await this.show(data.id)
 
-    if (alumnoExists) {
+    if (alumnoExists !== null) {
       throw new HTTPError(400, 'El alumno ya existe, no puede crearse uno nuevo con el mismo email')
     }
 
@@ -45,40 +45,26 @@ class AlumnoService {
     return alumno
   }
 
-  async update(id: number, data: Alumno) {
+  async update (id: number, data: Alumno) {
     const alumnoExists = await this.show(data.id)
 
-    
-    if (!alumnoExists) {
+    if (alumnoExists == null) {
       throw new HTTPError(404, 'Alumno no encontrado')
     }
 
-    const alumno = await prisma.alumno.update({
-      where: {
-        id
-      },
-      data
-    })
-
+    const alumno = await prisma.alumno.update({ where: { id }, data })
 
     return alumno
   }
 
-  async destroy(id: number) {
+  async destroy (id: number) {
     const alumnoExists = await this.show(id)
 
-    if (!alumnoExists) {
+    if (alumnoExists == null) {
       throw new HTTPError(404, 'Alumno no encontrado')
     }
 
-    const alumno = await prisma.alumno.update({
-      where: {
-        id
-      },
-      data: {
-        deletedAt: new Date()
-      }
-    })
+    const alumno = await prisma.alumno.update({ where: { id }, data: { deletedAt: new Date() } })
 
     return alumno
   }

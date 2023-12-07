@@ -3,5 +3,5 @@ import { typeDef } from './hello-world.schema'
 
 export const helloWorld = {
   resolver,
-  typeDef,
+  typeDef
 }

@@ -34,7 +34,7 @@ export const store = async (req: Request, res: Response, next: NextFunction) => 
 export const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const materia = await materiasService.update(Number(req.params.id), req.body)
-    
+
     res.json(materia)
   } catch (error) {
     next(error)

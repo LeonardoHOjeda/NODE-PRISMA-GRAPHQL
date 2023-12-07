@@ -2,7 +2,7 @@
 import './alias'
 import http from 'http'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import express, { Express } from 'express'
@@ -19,13 +19,13 @@ import routes from './router'
 class App {
   public app: Express
 
-  constructor() {
+  constructor () {
     this.app = express()
     this.middlewares()
     this.routes()
   }
 
-  middlewares() {
+  middlewares () {
     this.app.use(
       morgan('[:date[iso]] (:status) ":method :url HTTP/:http-version" :response-time ms - [:res[content-length]]')
     )
@@ -36,29 +36,29 @@ class App {
     this.app.use(express.urlencoded({ extended: false }))
   }
 
-  routes() {
+  routes () {
     this.app.use(routes)
     this.app.use(handleErrorMiddleware)
   }
 
-  async start() {
+  async start () {
     const httpServer = http.createServer(this.app)
     const server = new ApolloServer({
       schema,
       introspection: true,
-      plugins: [ApolloServerPluginDrainHttpServer ({ httpServer }), ApolloServerPluginLandingPageDisabled()],
+      plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageDisabled()]
     })
-  
+
     await server.start()
     logger.info('🚀 GraphQL server started')
-  
+
     this.app.use('/graphql', expressMiddleware(server, {
-      context: async ({req}) => ({
+      context: async ({ req }) => ({
         token: req.headers.token
       })
-    }));
-    return await httpServer.listen(settings.PORT, () => {
-      logger.info('🚀 Server listen on port ' + settings.PORT)
+    }))
+    return httpServer.listen(settings.PORT, () => {
+      logger.info(`🚀 Server listen on port ${settings.PORT}`)
     })
   }
 }

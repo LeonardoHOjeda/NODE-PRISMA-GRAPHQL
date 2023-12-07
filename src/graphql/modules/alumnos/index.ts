@@ -3,5 +3,5 @@ import { typeDef } from './alumnos.schema'
 
 export const alumnos = {
   resolver,
-  typeDef,
+  typeDef
 }

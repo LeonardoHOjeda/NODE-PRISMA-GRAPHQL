@@ -1,8 +1,9 @@
+import { prisma } from '@/database/client'
 import { Materia } from '@prisma/client'
 import { faker } from '@faker-js/faker'
 
 // Función para generar datos aleatorios
-const generateRandomMateria = (): Omit<Materia, "id" | "createdAt" | "updatedAt" | "deletedAt"> => {
+const generateRandomMateria = (): Omit<Materia, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'> => {
   return {
     name: faker.lorem.words(1),
     clave: faker.lorem.words(1),
@@ -11,8 +12,8 @@ const generateRandomMateria = (): Omit<Materia, "id" | "createdAt" | "updatedAt"
 }
 
 // Generar un array de alumnos utilizando faker
-export const generateMaterias = (quantity: number): Omit<Materia, "id" | "createdAt" | "updatedAt" | "deletedAt">[] => {
-  const materias: Omit<Materia, "id" | "createdAt" | "updatedAt" | "deletedAt">[] = []
+export const generateMaterias = (quantity: number): Array<Omit<Materia, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>> => {
+  const materias: Array<Omit<Materia, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>> = []
   for (let i = 0; i < quantity; i++) {
     materias.push(generateRandomMateria())
   }
@@ -20,4 +21,10 @@ export const generateMaterias = (quantity: number): Omit<Materia, "id" | "create
 }
 
 // Generar 5 alumnos aleatorios
-export const materias: Omit<Materia, "id" | "createdAt" | "updatedAt" | "deletedAt">[] = generateMaterias(5)
+export const materias: Array<Omit<Materia, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>> = generateMaterias(5)
+
+export async function seedMaterias () {
+  await prisma.materia.createMany({
+    data: materias
+  })
+}
