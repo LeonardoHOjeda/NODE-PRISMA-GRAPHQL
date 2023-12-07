@@ -7,7 +7,9 @@ export const typeDef = gql`
   }
 
   type Mutation {
-    createAlumno(input: CreateAlumnoInput): Alumno
+    createAlumno(input: CreateAlumnoInput): Alumno!
+    updateAlumno(id: Int!, input: UpdateAlumnoInput): Alumno
+    deleteAlumno(id: Int!): Alumno
   }
 
   type Alumno {
@@ -25,5 +27,12 @@ export const typeDef = gql`
     lastname: String!
     email: String!
     password: String!
+  }
+
+  input UpdateAlumnoInput {
+    name: String
+    lastname: String
+    email: String
+    password: String
   }
 `

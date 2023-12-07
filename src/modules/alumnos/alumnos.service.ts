@@ -32,6 +32,12 @@ class AlumnoService {
   }
 
   async store(data: Alumno) {
+    const alumnoExists = await this.show(data.id)
+
+    if (alumnoExists) {
+      throw new HTTPError(400, 'El alumno ya existe, no puede crearse uno nuevo con el mismo email')
+    }
+
     const alumno = await prisma.alumno.create({
       data
     })
@@ -40,6 +46,13 @@ class AlumnoService {
   }
 
   async update(id: number, data: Alumno) {
+    const alumnoExists = await this.show(data.id)
+
+    
+    if (!alumnoExists) {
+      throw new HTTPError(404, 'Alumno no encontrado')
+    }
+
     const alumno = await prisma.alumno.update({
       where: {
         id
@@ -47,14 +60,17 @@ class AlumnoService {
       data
     })
 
-    if (!alumno) {
-      throw new HTTPError(404, 'Alumno no encontrado')
-    }
 
     return alumno
   }
 
   async destroy(id: number) {
+    const alumnoExists = await this.show(id)
+
+    if (!alumnoExists) {
+      throw new HTTPError(404, 'Alumno no encontrado')
+    }
+
     const alumno = await prisma.alumno.update({
       where: {
         id
